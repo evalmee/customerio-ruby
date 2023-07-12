@@ -64,6 +64,21 @@ module Customerio
       create_anonymous_event(anonymous_id, event_name, attributes)
     end
 
+    def identify_object(identifiers = {}, attributes = {})
+      raise ParamError.new("identifiers parameter must be a non-empty hash") if identifiers.empty? || !identifiers.is_a?(Hash)
+      raise ParamError.new("attributes parameter must be an hash") unless relationship_identifiers.is_a?(Hash)
+
+      @client.request_and_verify_response(:post, add_entity_path,
+        {
+          type: "object",
+          action: "identify",
+          identifiers: identifiers,
+          attributes: attributes,
+        }
+      )
+
+    end
+
     def add_device(customer_id, device_id, platform, data={})
       raise ParamError.new("customer_id must be a non-empty string") if is_empty?(customer_id)
       raise ParamError.new("device_id must be a non-empty string") if is_empty?(device_id)
@@ -139,6 +154,10 @@ module Customerio
 
     def unsuppress_path(customer_id)
       "/api/v1/customers/#{escape(customer_id)}/unsuppress"
+    end
+
+    def add_entity_path
+      "https://track.customer.io/api/v2/entity"
     end
 
     def track_push_notification_event_path
