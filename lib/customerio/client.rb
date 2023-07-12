@@ -66,7 +66,7 @@ module Customerio
 
     def identify_object(identifiers = {}, attributes = {})
       raise ParamError.new("identifiers parameter must be a non-empty hash") if identifiers.empty? || !identifiers.is_a?(Hash)
-      raise ParamError.new("attributes parameter must be an hash") unless relationship_identifiers.is_a?(Hash)
+      raise ParamError.new("attributes parameter must be an hash") unless attributes.is_a?(Hash)
 
       @client.request_and_verify_response(:post, add_entity_path,
         {
