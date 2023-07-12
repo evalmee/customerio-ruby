@@ -64,9 +64,10 @@ module Customerio
       create_anonymous_event(anonymous_id, event_name, attributes)
     end
 
-    def identify_object(identifiers = {}, attributes = {})
+    def identify_object(identifiers = {}, attributes = {}, cio_relationships = [])
       raise ParamError.new("identifiers parameter must be a non-empty hash") if identifiers.empty? || !identifiers.is_a?(Hash)
       raise ParamError.new("attributes parameter must be an hash") unless attributes.is_a?(Hash)
+      raise ParamError.new("cio_relationships parameter must be an array") unless cio_relationships.is_a?(Array)
 
       @client.request_and_verify_response(:post, add_entity_path,
         {
@@ -74,6 +75,7 @@ module Customerio
           action: "identify",
           identifiers: identifiers,
           attributes: attributes,
+          cio_relationships: cio_relationships
         }
       )
 
