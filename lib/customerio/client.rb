@@ -159,11 +159,11 @@ module Customerio
     end
 
     def add_entity_path
-      "https://track.customer.io/api/v2/entity"
+      "/api/v2/entity"
     end
 
     def track_push_notification_event_path
-        "/push/events"
+      "/push/events"
     end
 
     def merge_customers_path
